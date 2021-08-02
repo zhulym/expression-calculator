@@ -1,29 +1,25 @@
-function eval() {
-    // Do not use eval!!!
-    return;
-}
-
 function expressionCalculator(expr) {
-
-    let result = expr.split(' ').join('');    //     '1+((36-3*2/6+5)+3)*3'
+    let result = expr.split(' ').join('');    //     '1+(21+3)*3'
     let bracketsIdx = [];
 
     while (result.length > 0) {
+        bracketsIdx = result.split('').filter(el => el === '(' || el === ')')
+        if (bracketsIdx.length % 2 !== 0) throw "ExpressionError: Brackets must be paired";
+        bracketsIdx = [];
         findBracketsIdx(result);
+
+        if (bracketsIdx.length === 1) throw "ExpressionError: Brackets must be paired";
+
         if (bracketsIdx.length === 0) {
             const result = countPartOfExpr();
-            if (result === Infinity) {
-                throw "TypeError: Division by zero."
-            }
+            if (result === Infinity) throw "TypeError: Division by zero."
             return result;
         }
-        let replace = result.slice(bracketsIdx[1], bracketsIdx[0] + 1);
 
+        let replace = result.slice(bracketsIdx[1], bracketsIdx[0] + 1);
         result = result.replace(replace, countPartOfExpr());
-        if (result === Infinity) {
-            throw "TypeError: Division by zero."
-        }
         bracketsIdx = [];
+        if (result === Infinity) throw "TypeError: Division by zero."
     };
 
     function findBracketsIdx(expression) {               // находим индексы внутренних скобок и по ним вычленяем первое выражение
