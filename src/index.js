@@ -1,14 +1,12 @@
 function expressionCalculator(expr) {
-    let result = expr.split(' ').join('');    //     '1+(21+3)*3'
+    let result = expr.split(' ').join('');
     let bracketsIdx = [];
 
     while (result.length > 0) {
         bracketsIdx = result.split('').filter(el => el === '(' || el === ')')
-        if (bracketsIdx.length % 2 !== 0) throw "ExpressionError: Brackets must be paired";
+        if (bracketsIdx.length % 2 !== 0 || bracketsIdx.length === 1) throw "ExpressionError: Brackets must be paired";
         bracketsIdx = [];
         findBracketsIdx(result);
-
-        if (bracketsIdx.length === 1) throw "ExpressionError: Brackets must be paired";
 
         if (bracketsIdx.length === 0) {
             const result = countPartOfExpr();
@@ -22,7 +20,7 @@ function expressionCalculator(expr) {
         if (result === Infinity) throw "TypeError: Division by zero."
     };
 
-    function findBracketsIdx(expression) {               // находим индексы внутренних скобок и по ним вычленяем первое выражение
+    function findBracketsIdx(expression) {               // находим индексы внутренних скобок и по ним вычленяем выражения
         for (let i = 0; i < expression.length; i++) {
             if (expression[i] === ')') {
                 bracketsIdx.push(i);
@@ -75,9 +73,6 @@ function expressionCalculator(expr) {
         }
         for (let i = 1; i < arrNum.length; i++) {
             if (arrNum[i] === '/') {
-                if (arrNum[i + 1] === 0) {
-                    throw "TypeError: Division by zero.";
-                }
                 let result1 = (arrNum[i - 1] / arrNum[i + 1]).toFixed(4);
                 arrNum.splice(i - 1, 3, result1);
                 i = 0;
