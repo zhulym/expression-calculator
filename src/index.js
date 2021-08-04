@@ -11,7 +11,7 @@ function expressionCalculator(expr) {
         if (bracketsIdx.length === 0) {
             const result = countPartOfExpr();
             if (result === Infinity) throw "TypeError: Division by zero."
-            return result;
+            return +result.toFixed(4);
         }
 
         let replace = result.slice(bracketsIdx[1], bracketsIdx[0] + 1);
@@ -66,35 +66,34 @@ function expressionCalculator(expr) {
         // ["36", "-", "3", "*", "2", "/", "6", "+", "5"] 
         for (let i = 1; i < arrNum.length; i++) {
             if (arrNum[i] === '*') {
-                let result1 = arrNum[i - 1] * arrNum[i + 1];
+                let result1 = (arrNum[i - 1] * arrNum[i + 1]);
                 arrNum.splice(i - 1, 3, result1);
                 i = 0;
             }
-        }
-        for (let i = 1; i < arrNum.length; i++) {
             if (arrNum[i] === '/') {
-                let result1 = (arrNum[i - 1] / arrNum[i + 1]).toFixed(4);
+                let result1 = (arrNum[i - 1] / arrNum[i + 1]);
                 arrNum.splice(i - 1, 3, result1);
                 i = 0;
             }
         }
+
         for (let i = 1; i < arrNum.length; i++) {
             if (arrNum[i] === '+') {
                 let result1 = +(arrNum[i - 1]) + +(arrNum[i + 1]);
                 arrNum.splice(i - 1, 3, result1);
                 i = 0;
             }
-        }
-        for (let i = 1; i < arrNum.length; i++) {
+
             if (arrNum[i] === '-') {
                 let result1 = arrNum[i - 1] - arrNum[i + 1];
                 arrNum.splice(i - 1, 3, result1);
                 i = 0;
             }
         }
+
         return Number(arrNum.toString());
     }
-    return result;
+    return result.toFixed(4);
 }
 
 module.exports = {
